@@ -33,12 +33,14 @@ function App() {
       </div>
       <div className="flex flex-col gap-4 mb-2">
         <Field
+          label="Student answers"
           answer={potentialAnswer}
           setAnswer={setPotentialAnswer}
           variant="textarea"
           error={error}
         />
         <Field
+          label="Teacher answers"
           answer={realAnswer}
           setAnswer={setRealAnswer}
           variant="input"
@@ -47,7 +49,7 @@ function App() {
         <button
           type="button"
           onClick={renderScore}
-          className="mt-6 bg-amber-200 border-2 border-amber-400 focus:outline-none focus:border-yellow-800 focus:border-dashed hover:bg-amber-300"
+          className="mt-6 bg-amber-200 border-2 border-amber-400 focus:outline-none focus:border-yellow-800 focus:border-dashed hover:bg-amber-300 text-black"
         >
           Check answers
         </button>

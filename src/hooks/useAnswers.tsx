@@ -11,14 +11,14 @@ export const useAnswers = () => {
   );
   const [realAnswer, setRealAnswer] = useState<string>(realAnswerPlaceholder);
   const [score, setScore] = useState<number>(0);
-  const [error, setError] = useState({ in: '', msg: '' });
-  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const renderScore = () => {
     setIsLoading(true)
     const { score, error } = getGrade(potentialAnswer, realAnswer);
     setScore(score);
-    setError({ in: error, msg: error ? 'Some answers are missing here' : '' });
+    setError(error);
     setIsLoading(false)
   };
 
