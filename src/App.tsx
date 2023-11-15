@@ -1,29 +1,20 @@
-import { useEffect, useState } from 'react';
+import { TbLoader2 } from 'react-icons/tb';
 import './App.css';
-import {
-  potentialAnswerPlaceholder,
-  realAnswerPlaceholder,
-} from './helpers/data';
-import { getGrade } from './helpers/functions';
+import { useAnswers } from './hooks/useAnswers';
 import { Field } from './components/Field';
+import { ERRORS } from './helpers/errors';
 
 function App() {
-  const [potentialAnswer, setPotentialAnswer] = useState<string>(
-    potentialAnswerPlaceholder
-  );
-  const [realAnswer, setRealAnswer] = useState<string>(realAnswerPlaceholder);
-  const [score, setScore] = useState<number>(0);
-  const [error, setError] = useState<string>('');
+  const {
+    poteAnswers: { potentialAnswer, setPotentialAnswer },
+    realAnswers: { realAnswer, setRealAnswer },
+    score,
+    error,
+    isLoading,
+    renderScore,
+  } = useAnswers();
 
-  const renderScore = () => {
-    const { score, error } = getGrade(potentialAnswer, realAnswer);
-    setScore(score);
-    setError(error);
-  };
-
-  useEffect(() => {
-    renderScore();
-  }, []);
+  const errorMessage = 'Some answers are missing here';
 
   return (
     <>
@@ -37,27 +28,36 @@ function App() {
           answer={potentialAnswer}
           setAnswer={setPotentialAnswer}
           variant="textarea"
-          error={error}
+          error={error === ERRORS.REAL ? errorMessage : ''}
         />
         <Field
           label="Teacher answers"
           answer={realAnswer}
           setAnswer={setRealAnswer}
           variant="input"
-          error={error}
+          error={error === ERRORS.STUDENT ? errorMessage : ''}
         />
         <button
           type="button"
           onClick={renderScore}
-          className="mt-6 bg-amber-200 border-2 border-amber-400 focus:outline-none focus:border-yellow-800 focus:border-dashed hover:bg-amber-300 text-black"
+          disabled = {isLoading}
+          className="mt-4 bg-amber-200 border-2 border-amber-400 focus:outline-none focus:border-yellow-800 focus:border-dashed hover:bg-amber-300 text-black"
         >
           Check answers
         </button>
       </div>
       <div className="result">
         <h3 className="text-xl">
-          The score is <br />
-          <span className="text-3xl font-semibold">{error ? '-' : score}</span>
+          The score is
+          <div className="text-3xl font-semibold flex justify-center items-center h-9">
+            {isLoading ? (
+              <TbLoader2 className="animate-spin w-6 h-6 text-yellow-700" />
+            ) : error ? (
+              '-'
+            ) : (
+              score
+            )}
+          </div>
         </h3>
       </div>
     </>

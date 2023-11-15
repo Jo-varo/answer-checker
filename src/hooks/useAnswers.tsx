@@ -14,9 +14,9 @@ export const useAnswers = () => {
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const renderScore = () => {
+  const renderScore = async () => {
     setIsLoading(true)
-    const { score, error } = getGrade(potentialAnswer, realAnswer);
+    const { score, error } = await getGrade(potentialAnswer, realAnswer);
     setScore(score);
     setError(error);
     setIsLoading(false)

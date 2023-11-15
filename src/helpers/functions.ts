@@ -1,7 +1,10 @@
-export function getGrade(studentAnswers = '', teacherAnswers = '') {
+import { ERRORS } from './errors';
+
+export async function getGrade(studentAnswers: string, teacherAnswers: string) {
+  await sleep(1.8);
   const result = { score: 0, error: '' };
 
-  const arrAnswers = studentAnswers
+  const cleanStudentAnswers = studentAnswers
     .toLocaleUpperCase()
     .split('\n')
     .filter((e) => e !== '')
@@ -10,26 +13,34 @@ export function getGrade(studentAnswers = '', teacherAnswers = '') {
       return chars !== null ? chars[0] : '';
     });
 
-  //throw error
-  if (teacherAnswers.length !== arrAnswers.length) {
-    result['error'] = ` ${
-      teacherAnswers.length > arrAnswers.length ? 'tested' : 'real'
-    }`;
+  const realAnswers = teacherAnswers;
+
+  if (realAnswers.length !== cleanStudentAnswers.length) {
+    result['error'] =
+      realAnswers.length > cleanStudentAnswers.length ? ERRORS.REAL : ERRORS.STUDENT;
+
     return result;
   }
 
   // console.log(
-  //   `Testing the next answers:\n${arrAnswers
+  //   `Testing the next answers:\n${cleanStudentAnswers
   //     .map((a, i) => `${i + 1}. ${a}`)
   //     .join('  ')}`
   // );
 
-  teacherAnswers
+  realAnswers
     .toLocaleUpperCase()
     .split('')
     .map((a, i) => {
-      if (a === arrAnswers[i]) result.score++;
+      if (a === cleanStudentAnswers[i]) result.score++;
     });
-  console.log(`The grade is: ${result.score}`);
   return result;
 }
+
+const sleep = async (seconds = 3): Promise<boolean> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, seconds * 1000);
+  });
+};
