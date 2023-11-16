@@ -1,3 +1,5 @@
+import { ChangeEvent, KeyboardEvent } from 'react';
+
 interface Props {
   variant: 'textarea' | 'input';
   label: string;
@@ -7,14 +9,20 @@ interface Props {
 }
 
 export const Field = ({ variant, answer, error, label, setAnswer }: Props) => {
-  const borderStyle = `${error ? 'border-red-400' : 'border-indigo-300'}`;
+  const borderStyle = `${error ? 'border-red-400 focus:border-red-700' : 'border-indigo-300 focus:border-indigo-600'}`;
+  const fieldStyle = `border-2 ${borderStyle} rounded p-4 w-full focus:outline-none`;
 
-  const fieldStyle = `border-2 ${borderStyle} rounded p-4 w-full focus:border-indigo-600 focus:outline-none ${
-    variant === 'textarea' ? ' resize-none' : ''
-  }`;
+  const preventSpaceKey = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === ' ') {
+      e.preventDefault();
+      return;
+    }
+  };
 
-  const formatRealAnswers = (char: string) => {
-    return char.toLocaleUpperCase().trim();
+  const setAnswerValue = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setAnswer(e.target.value);
   };
 
   return (
@@ -22,13 +30,11 @@ export const Field = ({ variant, answer, error, label, setAnswer }: Props) => {
       <h3 className="font-medium text-start text-lg">{label}</h3>
       {variant === 'textarea' && (
         <textarea
-          className={`${fieldStyle} mb-[-8px]`}
+          className={`${fieldStyle} mb-[-8px] resize-none`}
           placeholder={`Paste the ${label.toLocaleLowerCase()}`}
           rows={8}
           value={answer}
-          onChange={(e) => {
-            setAnswer(e.target.value);
-          }}
+          onChange={setAnswerValue}
         />
       )}
       {variant === 'input' && (
@@ -38,10 +44,8 @@ export const Field = ({ variant, answer, error, label, setAnswer }: Props) => {
           maxLength={10}
           type="text"
           value={answer}
-          onKeyDown={(e)=>{console.log(e)}}
-          onChange={(e) => {
-            setAnswer(formatRealAnswers(e.target.value));
-          }}
+          onKeyDown={preventSpaceKey}
+          onChange={setAnswerValue}
         />
       )}
       {error && (
