@@ -1,8 +1,11 @@
 import { ERRORS } from './errors';
 
 export async function getGrade(studentAnswers: string, teacherAnswers: string) {
-  await sleep(1.8);
-  const result = { score: 0, error: '' };
+  await sleep(0.5);
+  const result: { score: number; error: ERRORS } = {
+    score: 0,
+    error: ERRORS.NONE,
+  };
 
   const cleanStudentAnswers = studentAnswers
     .toLocaleUpperCase()
@@ -13,11 +16,13 @@ export async function getGrade(studentAnswers: string, teacherAnswers: string) {
       return chars !== null ? chars[0] : '';
     });
 
-  const realAnswers = teacherAnswers;
+  const realAnswers = teacherAnswers.trim();
 
   if (realAnswers.length !== cleanStudentAnswers.length) {
     result['error'] =
-      realAnswers.length > cleanStudentAnswers.length ? ERRORS.REAL : ERRORS.STUDENT;
+      realAnswers.length > cleanStudentAnswers.length
+        ? ERRORS.STUDENT
+        : ERRORS.REAL;
 
     return result;
   }
