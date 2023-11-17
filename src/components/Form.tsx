@@ -28,7 +28,7 @@ const Form = ({
   const errorMessage = 'Some answers are missing here';
 
   return (
-    <form className="flex flex-col gap-4 mb-2" onSubmit={handleSubmit}>
+    <form className="flex flex-col gap-6 mb-2" onSubmit={handleSubmit}>
       <Field
         label="Student answers"
         answer={potentialAnswer}

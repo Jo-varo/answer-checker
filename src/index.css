@@ -39,3 +39,8 @@ button {
   disabled:cursor-default disabled:bg-amber-200 disabled:text-gray-600 hover:bg-amber-300
   transition-colors duration-300 rounded-md;
 }
+
+.svg-icon {
+  filter: invert(100%) sepia(1%) saturate(439%) hue-rotate(235deg)
+    brightness(120%) contrast(100%);
+}

@@ -9,7 +9,11 @@ interface Props {
 }
 
 export const Field = ({ variant, answer, error, label, setAnswer }: Props) => {
-  const borderStyle = `${error ? 'border-red-400 focus:border-red-700' : 'border-indigo-300 focus:border-indigo-600'}`;
+  const borderStyle = `${
+    error
+      ? 'border-red-400 focus:border-red-700'
+      : 'border-indigo-300 focus:border-indigo-600'
+  }`;
   const fieldStyle = `border-2 ${borderStyle} rounded p-4 w-full focus:outline-none`;
 
   const preventSpaceKey = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -26,7 +30,7 @@ export const Field = ({ variant, answer, error, label, setAnswer }: Props) => {
   };
 
   return (
-    <div>
+    <div className="input-group">
       <h3 className="font-medium text-start text-lg">{label}</h3>
       {variant === 'textarea' && (
         <textarea
